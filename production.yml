@@ -1,9 +1,9 @@
-version: "3"
+version: "3.8"
 
 volumes:
-  static_volume:
-  media_volume:
-  certs:
+  static_volume: {}
+  media_volume: {}
+  certs: {}
   local_postgres_data: {}
   local_postgres_data_backups: {}
 
