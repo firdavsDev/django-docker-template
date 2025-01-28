@@ -12,7 +12,7 @@
 
 
 gunicorn==20.1.0  # https://github.com/benoitc/gunicorn
-psycopg[c]==3.1.9  # https://github.com/psycopg/psycopg
+psycopg[c]==3.2.4  # https://github.com/psycopg/psycopg
 sentry-sdk==1.27.0  # https://github.com/getsentry/sentry-python
 daphne==3.0.2 # https://pypi.org/project/daphne/
 
