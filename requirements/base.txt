@@ -8,7 +8,7 @@ Django==3.2.9
 django-extensions==3.1.5 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html
 django-import-export==2.8.0 # https://django-import-export.readthedocs.io/en/latest/installation.html
 django-filter==21.1 # https://pypi.org/project/django-filter/
-django-debug-toolbar==3.5.0 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+django-debug-toolbar==5.0.1 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
 
 # Django REST Framework
 djangorestframework==3.14.0  # https://github.com/encode/django-rest-framework
