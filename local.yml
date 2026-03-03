@@ -12,7 +12,8 @@ services:
     image: name_django
     container_name: django
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     volumes:
       - .:/app:cached
     env_file:
@@ -33,12 +34,24 @@ services:
       - local_postgres_data_backups:/backups:cached
     env_file:
       - ./.envs/.local/.postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   redis:
     image: redis:7.2-alpine
     container_name: name_redis
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   celery:
     <<: *django
@@ -49,8 +62,10 @@ services:
     container_name: name_celery
     ports: []
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   celery-beat:
     <<: *django
@@ -61,5 +76,7 @@ services:
     container_name: name_celery_beat
     ports: []
     depends_on:
-      - redis
-      - postgres
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy

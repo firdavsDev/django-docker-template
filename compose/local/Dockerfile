@@ -10,6 +10,8 @@ RUN apt-get update \
   && apt-get install -y libpq-dev libmagic-dev \
   # Translations dependencies
   && apt-get install -y gettext nodejs npm \
+  # pg_isready for postgres health check
+  && apt-get install -y postgresql-client \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
