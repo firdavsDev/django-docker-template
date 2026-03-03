@@ -6,34 +6,34 @@ endif
 
 
 build:
-	docker-compose -f local.yml up --build --remove-orphans
+	docker compose -f local.yml up --build --remove-orphans
 
 up:
-	docker-compose -f local.yml up -d
+	docker compose -f local.yml up -d
 
 down:
-	docker-compose -f local.yml down
+	docker compose -f local.yml down
 
 down-v:
-	docker-compose -f local.yml down -v
+	docker compose -f local.yml down -v
 
 logs:
-	docker-compose -f local.yml logs -f
+	docker compose -f local.yml logs -f
 
 makemigrations:
-	docker-compose -f local.yml run --rm django python manage.py makemigrations
+	docker compose -f local.yml run --rm django python manage.py makemigrations
 
 migrate:
-	docker-compose -f local.yml run --rm django python manage.py migrate --no-input
+	docker compose -f local.yml run --rm django python manage.py migrate --no-input
 
 superuser:
-	docker-compose -f local.yml run --rm django python manage.py createsuperuser
+	docker compose -f local.yml run --rm django python manage.py createsuperuser
 
 shell:
-	docker-compose -f local.yml run --rm django python manage.py shell_plus
+	docker compose -f local.yml run --rm django python manage.py shell_plus
 
 restart:
-	docker-compose -f local.yml restart
+	docker compose -f local.yml restart
 
 backup:
 	docker compose -f local.yml exec postgres backup

@@ -1,9 +1,8 @@
-version: "3"
+version: "3.9"
 
 volumes:
   local_postgres_data: {}
   local_postgres_data_backups: {}
-  pgadmin-data: {}
 
 services:
   django: &django
@@ -36,35 +35,31 @@ services:
       - ./.envs/.local/.postgres
 
   redis:
-    image: redis:6.2-alpine
+    image: redis:7.2-alpine
     container_name: name_redis
     ports:
       - "6379:6379"
 
   celery:
+    <<: *django
     build:
       context: .
       dockerfile: ./compose/local/Dockerfile
     command: celery -A config worker -l info
-    volumes:
-      - .:/app:cached
-    env_file:
-      - ./.envs/.local/.django
-      - ./.envs/.local/.postgres
+    container_name: name_celery
+    ports: []
     depends_on:
       - postgres
       - redis
 
   celery-beat:
+    <<: *django
     build:
       context: .
       dockerfile: ./compose/local/Dockerfile
     command: celery -A config beat -l info
-    volumes:
-      - .:/app:cached
-    env_file:
-      - ./.envs/.local/.django
-      - ./.envs/.local/.postgres
+    container_name: name_celery_beat
+    ports: []
     depends_on:
       - redis
       - postgres

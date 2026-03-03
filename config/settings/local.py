@@ -1,10 +1,11 @@
 from .base import *  # noqa
 
 ALLOWED_HOSTS = ["*"]
-DEBUG = os.environ["DEBUG"]
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-# Allow all host headers
-CORS_ORIGIN_ALLOW_ALL = True
+INSTALLED_APPS += ["debug_toolbar"]  # noqa: F405
+
+MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]  # noqa: F405
 
 if DEBUG:
     import socket  # only if you haven't already imported this

@@ -1,29 +1,28 @@
 # Python
-whitenoise==5.3.0 # https://pypi.org/project/whitenoise/
-pre-commit==2.15.0 # https://pre-commit.com/
-requests==2.28.0 # https://pypi.org/project/requests/
+whitenoise==6.8.2 # https://pypi.org/project/whitenoise/
+pre-commit==4.1.0 # https://pre-commit.com/
+requests==2.32.3 # https://pypi.org/project/requests/
 
 # Django
-Django==3.2.9
-django-extensions==3.1.5 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html
-django-import-export==2.8.0 # https://django-import-export.readthedocs.io/en/latest/installation.html
-django-filter==21.1 # https://pypi.org/project/django-filter/
-django-debug-toolbar==3.5.0 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+Django==4.2.28
+django-extensions==3.2.3 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html
+django-import-export==4.3.0 # https://django-import-export.readthedocs.io/en/latest/installation.html
+django-filter==25.1 # https://pypi.org/project/django-filter/
 
 # Django REST Framework
-djangorestframework==3.14.0  # https://github.com/encode/django-rest-framework
-django-cors-headers==4.1.0  # https://github.com/adamchainz/django-cors-headers
-djangochannelsrestframework==0.3.0 # https://djangochannelsrestframework.readthedocs.io/en/latest/
+djangorestframework==3.15.2  # https://github.com/encode/django-rest-framework
+django-cors-headers==4.6.0  # https://github.com/adamchainz/django-cors-headers
+djangochannelsrestframework==1.2.0 # https://djangochannelsrestframework.readthedocs.io/en/latest/
 
 # DRF-spectacular for api documentation
-drf-spectacular==0.26.3  # https://github.com/tfranzel/drf-spectacular
+drf-spectacular==0.27.2  # https://github.com/tfranzel/drf-spectacular
 
 # Postgres
-psycopg2-binary==2.9.2 # https://pypi.org/project/psycopg2-binary/
+psycopg2-binary==2.9.9 # https://pypi.org/project/psycopg2-binary/
 
-#Backgound Task (cellery)
-celery==5.1.2
-redis==3.5.3
+#Background Task (celery)
+celery==5.4.0
+redis==5.0.8
 
 #Celery monitoring https://cronitor.io/
-cronitor==4.5.0
+cronitor==4.6.0

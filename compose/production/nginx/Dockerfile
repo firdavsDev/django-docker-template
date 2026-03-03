@@ -1,4 +1,4 @@
-FROM nginx
+FROM nginx:1.27-alpine
 
 RUN addgroup --system django \
     && adduser --system --ingroup django django

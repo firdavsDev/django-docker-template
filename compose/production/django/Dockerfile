@@ -1,12 +1,12 @@
 
-FROM python:3.9-slim-buster
+FROM python:3.11-slim-bookworm
 
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update \
   # dependencies for building Python packages
   && apt-get install -y build-essential \
-  # psycopg2 dependencies
+  # psycopg dependencies
   && apt-get install -y libpq-dev libmagic-dev \
   # Translations dependencies
   && apt-get install -y gettext \
@@ -46,14 +46,11 @@ RUN chown django /start
 
 
 COPY --chown=django:django . $APP_HOME
-RUN chown -R django:django $APP_HOME
 
-COPY . $APP_HOME
-
-RUN mkdir $APP_HOME/src/static
+RUN mkdir -p $APP_HOME/src/static
 RUN chown django $APP_HOME/src/static
 
-RUN mkdir $APP_HOME/src/media
+RUN mkdir -p $APP_HOME/src/media
 RUN chown django $APP_HOME/src/media
 
 

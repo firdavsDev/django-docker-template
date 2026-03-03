@@ -3,6 +3,7 @@
 # Python
 
 # Django
+django-debug-toolbar==4.4.6 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
 
 # Rest Framework
 

@@ -33,15 +33,15 @@ Folder Structure Conventions
 
 This project has the following prerequisites
 
-- python 3.9.8
-- docker 19.03.12
-- docker-compose 1.25.0
+- python 3.11+
+- docker 24.0+
+- docker compose v2
 
 ## Setup
 
 - Type the command below to setup the project locally:
 
--  docker-compose -f local.yml up --build
+-  docker compose -f local.yml up --build
 
 ### Development
 
@@ -63,7 +63,7 @@ pre-commmit install
 - Type the command below to deploy the project locally:
 
 ```
-docker-compose -f local.yml up -d
+docker compose -f local.yml up -d
 ```
 
 - You should be good to go now
