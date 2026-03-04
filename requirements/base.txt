@@ -22,7 +22,7 @@ drf-spectacular==0.26.3  # https://github.com/tfranzel/drf-spectacular
 psycopg2-binary==2.9.2 # https://pypi.org/project/psycopg2-binary/
 
 #Backgound Task (cellery)
-celery==5.1.2
+celery==5.6.2
 redis==3.5.3
 
 #Celery monitoring https://cronitor.io/
