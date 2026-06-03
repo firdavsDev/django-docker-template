@@ -26,4 +26,4 @@ celery==5.1.2
 redis==3.5.3
 
 #Celery monitoring https://cronitor.io/
-cronitor==4.5.0
+cronitor==4.9.0
