@@ -33,7 +33,9 @@ services:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
     ports:
-      - "8000:8000"
+      # bound to localhost only: Docker published ports bypass UFW,
+      # so 8000:8000 would be reachable from the internet
+      - "127.0.0.1:8000:8000"
     command: /start
 
   postgres:
