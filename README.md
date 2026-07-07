@@ -42,6 +42,7 @@ Useful targets: `make up`, `make down`, `make logs`, `make migrate`, `make makem
 
 - [Setup & run guide](docs/setup-and-run.md) — template setup, local (with/without Docker), production deploy, logs, backups
 - [uv & Docker guide](docs/uv-and-docker.md) — dependency management workflow, compose details
+- [VDS deployment guide](docs/DEPLOY.md) — Ubuntu server from zero: Docker, nginx + certbot, UFW, fail2ban, and one-command updates via `./scripts/deploy.sh`
 
 API docs (staff login required): http://localhost:8000/api/docs/ · Admin: http://localhost:8000/admin/panel/
 
