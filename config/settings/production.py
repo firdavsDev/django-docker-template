@@ -1,10 +1,22 @@
+import os
+
 from .base import *  # noqa
 from .sentry_conf import *  # noqa
 
 SERVER_IP = os.environ["SERVER_IP"]
 SERVER_DOMAIN = os.environ["SERVER_DOMAIN"]
 
-DEBUG = os.environ["DEBUG"]
+# Required in production — no insecure fallbacks
+SECRET_KEY = os.environ["SECRET_KEY"]
+DATABASES["default"].update(  # noqa: F405
+    HOST=os.environ["POSTGRES_HOST"],
+    NAME=os.environ["POSTGRES_DB"],
+    PORT=os.environ["POSTGRES_PORT"],
+    USER=os.environ["POSTGRES_USER"],
+    PASSWORD=os.environ["POSTGRES_PASSWORD"],
+)
+
+DEBUG = os.environ.get("DEBUG", "False").lower() in ("true", "1", "yes")
 
 ALLOWED_HOSTS = [SERVER_IP, SERVER_DOMAIN]
 
@@ -21,7 +33,8 @@ ALLOWED_IPS_AND_DOMAINS = [
 # CSRF
 CSRF_TRUSTED_ORIGINS = ALLOWED_IPS_AND_DOMAINS
 # CORS
-CORS_ORIGIN_WHITELIST = [
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:8000",
@@ -55,4 +68,11 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # STATIC
 # ------------------------
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}

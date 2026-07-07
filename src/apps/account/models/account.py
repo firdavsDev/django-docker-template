@@ -3,8 +3,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from src.apps.common.models import BaseModel, RoleChoice
 from src.apps.account.managers.account import UserManager
+from src.apps.common.models import BaseModel, RoleChoice
 
 
 class User(AbstractBaseUser, PermissionsMixin, BaseModel):
@@ -30,8 +30,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     is_active = models.BooleanField(
         default=True,
         help_text=_(
-            "Designates whether this user should be treated as active. "
-            "Unselect this instead of deleting account."
+            "Designates whether this user should be treated as active. Unselect this instead of deleting account."
         ),
         verbose_name=_("active"),
     )

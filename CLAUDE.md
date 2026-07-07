@@ -14,16 +14,20 @@ Everything runs through Docker Compose (`local.yml`), wrapped by the Makefile:
 - `make up` / `make down` / `make down-v` (wipes volumes) / `make logs`
 - `make makemigrations` / `make migrate` / `make superuser` / `make shell` (shell_plus)
 - One-off commands: `docker-compose -f local.yml run --rm django python manage.py <cmd>` (legacy hyphenated `docker-compose`)
-- Lint: `pre-commit run --all-files` (autoflake is the only active hook; black/isort are intentionally commented out)
+- No-Docker local run: `make venv` (uv sync) then `make run-local` — zero env vars needed (SQLite fallback kicks in when `POSTGRES_HOST` unset; insecure default `SECRET_KEY`; cronitor skipped without `CRONITOR_API_KEY`).
+- Dependencies: managed by **uv** — `pyproject.toml` + `uv.lock` are the source of truth (`production` extra, `dev` group). `requirements/*.txt` are generated artifacts — never edit by hand; run `make lock` after changing pyproject.toml.
+- Lint/format: **ruff** (config in pyproject.toml — line length 120, isort + pyupgrade + django rules, max-complexity 10). `uv run ruff check --fix` + `uv run ruff format`, or `pre-commit run --all-files`. Replaces black/isort/autoflake/flake8.
 - No tests, by design. CI's "pytest" job only builds and runs migrations — do not add test setup unless asked.
 
 ## Environment / gotchas
 
-- Target Python 3.9 (Docker image); CI linter's 3.11 is not the target. Django 3.2 + DRF.
-- Settings split: `config/settings/{base,local,production}.py`. `manage.py` reads `DJANGO_SETTINGS_MODULE` from env directly — KeyError if unset (local compose sets `config.settings.local`).
+- Python 3.12 (Docker image `python:3.12-slim-bookworm`), Django 5.2 LTS + DRF.
+- Settings split: `config/settings/{base,local,production}.py`. `manage.py` defaults `DJANGO_SETTINGS_MODULE` to `config.settings.local`.
 - Env files live in `.envs/.local/` (`.django`, `.postgres`). Committed secrets/certs there are intentional local placeholders.
-- Settings KeyError without: `SECRET_KEY`, `DEBUG`, `POSTGRES_HOST/DB/PORT/USER/PASSWORD`. `config/celery.py` reads `CRONITOR_API_KEY` unconditionally — Celery won't start without it set (empty is fine).
-- `DEBUG` is read as a raw string, so `"False"` is still truthy — known quirk, don't "fix" without asking.
+- base/local settings have safe env defaults (SQLite, localhost Redis via `REDIS_HOST`); production.py requires `SECRET_KEY`, `SERVER_IP`, `SERVER_DOMAIN`, `POSTGRES_*` and crashes without them — intentional.
+- Cache + sessions are Redis-backed (`cached_db` sessions, Redis DB 1; celery uses DB 0); no-Docker local falls back to LocMemCache + DB sessions.
+- App logs: rotating `logs/access.log` + `logs/errors.log` (5MB x 5), config in `config/settings/logging_conf.py`; production bind-mounts `./logs`, entrypoint chowns it (root → gosu django).
+- Setup/run guides: `docs/setup-and-run.md`, `docs/uv-and-docker.md`.
 - Custom user model: `account.User` (`AUTH_USER_MODEL`).
 
 ## Structure conventions
@@ -32,4 +36,3 @@ Everything runs through Docker Compose (`local.yml`), wrapped by the Makefile:
 - App registration: full path in `LOCAL_APPS` (`"src.apps.<name>.apps.<Name>Config"`), `apps.py` `name = "src.apps.<name>"`.
 - URL wiring chain: `config/urls.py` → `src/apps/v1.py` → `src/apps/<name>/<name>.py` (app-level, sets `app_name`) → `src/apps/<name>/urls/<name>.py`.
 - Business logic goes in `services/`, not views.
-- flake8: `max-complexity = 10`; migrations/templates/scripts excluded. Spellcheck plugin active — add new jargon to `whitelist.txt` if flagged.

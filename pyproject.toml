@@ -1,0 +1,61 @@
+[project]
+name = "django-docker-template"
+version = "1.0.0"
+description = "Django + Docker project template"
+requires-python = ">=3.12"
+dependencies = [
+    # Django
+    "django>=5.2,<6.0",
+    "django-extensions>=4.1",
+    "django-import-export>=4.3",
+    "django-filter>=25.1",
+    # Django REST Framework
+    "djangorestframework>=3.16",
+    "django-cors-headers>=4.7",
+    "drf-spectacular>=0.28",
+    # Channels / websockets
+    "channels>=4.2",
+    "channels-redis>=4.2",
+    "djangochannelsrestframework>=1.3",
+    # Postgres
+    "psycopg[binary]>=3.2",
+    # Background tasks (celery)
+    "celery>=5.5",
+    "redis>=5.2",
+    "cronitor>=4.7",
+    # Misc
+    "whitenoise>=6.9",
+    "requests>=2.32",
+    "pyyaml>=6.0",
+    "pillow>=11.0",
+]
+
+[project.optional-dependencies]
+production = [
+    "gunicorn>=23.0",
+    "sentry-sdk>=2.0",
+    "daphne>=4.1",
+]
+
+[dependency-groups]
+dev = [
+    "django-debug-toolbar>=5.2",
+    "pre-commit>=4.0",
+    "ruff>=0.11",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["**/migrations/*"]
+
+[tool.ruff.lint]
+# E/W: pycodestyle, F: pyflakes (unused imports/vars), I: isort,
+# UP: pyupgrade, DJ: flake8-django, C90: complexity
+select = ["E", "W", "F", "I", "UP", "DJ", "C90"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10

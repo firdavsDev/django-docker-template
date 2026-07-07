@@ -5,6 +5,13 @@ set -o pipefail
 set -o nounset
 
 
+# Container starts as root: fix ownership of the bind-mounted logs dir,
+# then re-exec this script as the unprivileged django user.
+if [ "$(id -u)" = "0" ]; then
+    mkdir -p /home/app/web/logs
+    chown -R django:django /home/app/web/logs
+    exec gosu django "$0" "$@"
+fi
 
 if [ -z "${POSTGRES_USER}" ]; then
     base_postgres_image_default_user='postgres'
@@ -16,17 +23,17 @@ postgres_ready() {
 python << END
 import sys
 
-import psycopg2
+import psycopg
 
 try:
-    psycopg2.connect(
+    psycopg.connect(
         dbname="${POSTGRES_DB}",
         user="${POSTGRES_USER}",
         password="${POSTGRES_PASSWORD}",
         host="${POSTGRES_HOST}",
         port="${POSTGRES_PORT}",
     )
-except psycopg2.OperationalError:
+except psycopg.OperationalError:
     sys.exit(-1)
 sys.exit(0)
 

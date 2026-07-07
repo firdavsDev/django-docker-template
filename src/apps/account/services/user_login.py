@@ -1,23 +1,18 @@
 from rest_framework.authtoken.models import Token
+from rest_framework.exceptions import AuthenticationFailed
 
 from ...account.models import User
-from ...common.utils import FAILURE_BODY, SUCCESS_BODY
 
 
-def login(email: str, password: str):
-    user = User.objects.filter(email=email)
-    if user.exists() is False:
-        additional_data = dict(message="login failed, incorrect login or password")
-        SUCCESS_BODY.update(**additional_data)
-        return FAILURE_BODY
+def login(email: str, password: str) -> dict:
+    """Authenticate by email/password and return token payload.
 
+    Raises AuthenticationFailed on bad credentials; the view layer wraps
+    the result via CustomResponseMixin.
+    """
     user = User.objects.filter(email=email).first()
-    if user.check_password(password) is False:
-        additional_data = dict(message="login failed, incorrect login or password")
-        SUCCESS_BODY.update(**additional_data)
-        return FAILURE_BODY
+    if user is None or not user.check_password(password):
+        raise AuthenticationFailed("login failed, incorrect login or password")
 
     token, _ = Token.objects.get_or_create(user=user)
-    additional_data = dict(id=user.id, token=token.key)
-    SUCCESS_BODY.update(**additional_data)
-    return SUCCESS_BODY
+    return {"id": user.id, "token": token.key}

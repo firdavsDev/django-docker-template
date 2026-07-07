@@ -1,12 +1,9 @@
-version: "3"
-
 volumes:
   local_postgres_data: {}
   local_postgres_data_backups: {}
-  pgadmin-data: {}
 
 services:
-  django: &django
+  django:
     build:
       context: .
       dockerfile: ./compose/local/Dockerfile
@@ -36,7 +33,7 @@ services:
       - ./.envs/.local/.postgres
 
   redis:
-    image: redis:6.2-alpine
+    image: redis:7-alpine
     container_name: name_redis
     ports:
       - "6379:6379"
