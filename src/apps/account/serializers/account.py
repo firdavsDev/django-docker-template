@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
@@ -28,27 +28,34 @@ class UserLoginSerializer(serializers.ModelSerializer):
         )
 
 
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        write_only=True,
+        style={"input_type": "password"},
+        validators=[validate_password],
+    )
+
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "password",
+        )
+
+    def create(self, validated_data):
+        password = validated_data.pop("password")
+        return User.objects.create_user(password=password, **validated_data)
+
+
 class AuthTokenSerializer(serializers.Serializer):
-    email = serializers.CharField(label=_("Email"))
-    password = serializers.CharField(label=_("Password"), style={"input_type": "password"})
+    """Validates login input shape only; authentication lives in services.login."""
 
-    def validate(self, attrs):
-        self._errors = {}
-        email = attrs.get("email")
-        password = attrs.get("password")
-
-        if not email or not password:
-            self._errors["errors"] = dict(message=_('Must include "email" and "password'))
-
-        user = authenticate(email=email, password=password)
-
-        if not user:
-            self._errors["errors"] = dict(
-                message=_("Authenticated has failed, either user is blocked or does not exist")
-            )
-
-        if self._errors:
-            raise serializers.ValidationError(self._errors)
-
-        attrs["user"] = user
-        return attrs
+    email = serializers.EmailField(label=_("Email"))
+    password = serializers.CharField(
+        label=_("Password"),
+        style={"input_type": "password"},
+        write_only=True,
+    )

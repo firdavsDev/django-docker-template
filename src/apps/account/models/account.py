@@ -24,7 +24,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     )
     role = models.CharField(
         choices=RoleChoice.choices,
-        default=RoleChoice.PLANNER,
+        default=RoleChoice.MEMBER,
         max_length=15,
     )
     is_active = models.BooleanField(

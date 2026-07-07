@@ -11,5 +11,7 @@ class BaseModel(models.Model):
 
 
 class RoleChoice(models.TextChoices):
-    PLANNER = "planner", _("planner")
-    SALES_MANAGER = "sales_manager", _("sales_manager")
+    # Generic starter roles — replace per project.
+    ADMIN = "admin", _("admin")
+    MANAGER = "manager", _("manager")
+    MEMBER = "member", _("member")

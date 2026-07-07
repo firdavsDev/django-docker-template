@@ -1,39 +1,71 @@
-from django.contrib.auth import get_user_model
 from rest_framework import renderers
 from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
 from ...common.mixins import CustomResponseMixin
-from ..serializers.account import AuthTokenSerializer, UserLoginSerializer
+from ..serializers.account import (
+    AuthTokenSerializer,
+    RegisterSerializer,
+    UserLoginSerializer,
+    UserSerializer,
+)
+from ..services.user_login import login
 
-User = get_user_model()
 
-
-class UserObtainTokenAPIView(CustomResponseMixin, ObtainAuthToken):
+class UserLoginAPIView(CustomResponseMixin, APIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer)
     serializer_class = AuthTokenSerializer
-    renderer_classes = (renderers.JSONRenderer, renderers.AdminRenderer)
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data, context={"request": request})
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data["user"]
-        token, _ = Token.objects.get_or_create(user=user)
-        user_serializer = UserLoginSerializer(instance=user)
-        details = user_serializer.data
-        details.update(token=token.key)
-        return self.success(message="Login successful", data=details)
+        result = login(request=request, **serializer.validated_data)
+
+        data = UserLoginSerializer(instance=result["user"]).data
+        data["token"] = result["token"]
+        return self.success(message="Login successful", data=data)
 
 
-user_login_api_view = UserObtainTokenAPIView.as_view()
+user_login_api_view = UserLoginAPIView.as_view()
+
+
+class RegisterAPIView(CustomResponseMixin, APIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = ()
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return self.success(
+            message="Registration successful",
+            data=UserSerializer(instance=user).data,
+            status_code=201,
+        )
+
+
+register_api_view = RegisterAPIView.as_view()
+
+
+class MeAPIView(CustomResponseMixin, APIView):
+    serializer_class = UserLoginSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.success(message="OK", data=self.serializer_class(instance=request.user).data)
+
+
+me_api_view = MeAPIView.as_view()
 
 
 class LogoutAPIView(CustomResponseMixin, APIView):
     serializer_class = None
 
-    def get(self, request):
+    def post(self, request, *args, **kwargs):
         Token.objects.filter(user=request.user).delete()
-
         return self.success(message="You have successfully logged out")
 
 

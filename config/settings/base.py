@@ -36,6 +36,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%Y-%m-%d %H:%M",
+    "EXCEPTION_HANDLER": "src.apps.common.exceptions.custom_exception_handler",
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -131,7 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "Asia/Tashkent"
+TIME_ZONE = os.environ.get("TIME_ZONE", "UTC")
 
 USE_I18N = True
 
@@ -151,10 +152,11 @@ STATICFILES_FINDERS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # celery settings
-CELERY_TIMEZONE = "Asia/Tashkent"
+CELERY_TIMEZONE = TIME_ZONE
+# Example periodic task — uncomment and adapt:
 # CELERY_BEAT_SCHEDULE = {
-#     'ParsingMaterialsStockFromSAP': {
-#         'task': 'src.apps.stock.tasks.parsing_materials_stock_from_SAP',
+#     'example-daily-task': {
+#         'task': 'src.apps.<app>.tasks.<task>',
 #         'schedule': crontab(hour='8', minute=0),
 #     }
 # }

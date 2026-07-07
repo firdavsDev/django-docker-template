@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=254, unique=True)),
                 ('first_name', models.CharField(blank=True, max_length=150, verbose_name='first name')),
                 ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('role', models.CharField(choices=[('planner', 'planner'), ('sales_manager', 'sales_manager')], default='planner', max_length=15)),
+                ('role', models.CharField(choices=[('admin', 'admin'), ('manager', 'manager'), ('member', 'member')], default='member', max_length=15)),
                 ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting account.', verbose_name='active')),
                 ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
                 ('is_superuser', models.BooleanField(default=False, verbose_name='superuser status')),
