@@ -113,12 +113,27 @@ Django is bound to `127.0.0.1:8000` — reachable only through nginx.
 
 > ⚠️ Docker published ports **bypass UFW** (Docker writes its own iptables rules). Never publish `0.0.0.0` ports you don't intend to expose — UFW will not save you.
 
-Redeploy after a code change:
+### Updates: one-command redeploy
+
+After pushing changes from local, SSH in and run:
 
 ```bash
-git pull
-docker compose -f production.yml up -d --build django celery celery-beat
+./scripts/deploy.sh            # pulls master
+./scripts/deploy.sh mybranch   # or any branch
 ```
+
+The script picks the cheapest safe action automatically:
+
+| What changed | Action |
+|---|---|
+| only code | cached rebuild (~seconds) + swap django/celery containers — postgres/redis/nginx keep running |
+| `pyproject.toml` / `uv.lock` / Dockerfiles / `production.yml` | full rebuild + `up -d` |
+| `.envs/.production/` (detected via checksum — not in git) | full rebuild + `up -d` |
+| nothing relevant (docs etc.) | nothing |
+
+It then health-checks django on `127.0.0.1:8000`, shows container status, and prunes superseded image layers. Using the containerized nginx? Set `SERVICES=""` at the top of the script.
+
+> Code is baked into the image, so a bare container restart never loads new code — the "fast path" is a cached rebuild where only the final `COPY` layer changes.
 
 ---
 
