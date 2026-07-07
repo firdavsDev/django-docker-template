@@ -34,6 +34,9 @@ Everything runs through Docker Compose (`local.yml`), wrapped by the Makefile:
 ## Structure conventions
 
 - Apps live in `src/apps/<name>/`, sub-packaged: `models/`, `managers/`, `serializers/`, `services/`, `views/`, `urls/` (one module per concern, re-exported via `__init__.py`). Follow `src/apps/account/` as the reference.
+- **One endpoint per view module.** Inside `views/`, each endpoint (or tight endpoint group) is its own module named for the action — `login.py`, `register.py`, `logout.py`, `token.py`, `profile.py` — each defining the `APIView` subclass plus its `*_api_view = View.as_view()` callable. `views/__init__.py` re-exports every view class and callable; `urls/<name>.py` does `from .. import views` and references `views.<callable>`. Do NOT put multiple unrelated endpoints in one file. See `src/apps/account/views/` as the reference.
+- **Serializers split the same way**, by resource/concern: `user.py`, `login.py`, `register.py`, `token.py`, re-exported via `serializers/__init__.py`. Views import from the package root (`from ..serializers import RegisterSerializer`).
 - App registration: full path in `LOCAL_APPS` (`"src.apps.<name>.apps.<Name>Config"`), `apps.py` `name = "src.apps.<name>"`.
 - URL wiring chain: `config/urls.py` → `src/apps/v1.py` → `src/apps/<name>/<name>.py` (app-level, sets `app_name`) → `src/apps/<name>/urls/<name>.py`.
-- Business logic goes in `services/`, not views.
+- Business logic goes in `services/`, not views. Views: validate input serializer → call service → wrap result via `CustomResponseMixin` (`self.success(...)`). Raised DRF exceptions auto-envelope through `common.exceptions.custom_exception_handler`.
+- To add an endpoint, use `/new-endpoint <app> <name>`.
