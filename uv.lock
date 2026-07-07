@@ -394,21 +394,6 @@ wheels = [
 ]
 
 [[package]]
-name = "cronitor"
-version = "4.9.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "humanize" },
-    { name = "pyyaml" },
-    { name = "requests" },
-    { name = "urllib3" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/e9/10/4dd1042302403f8b6cac685ee6138c902179ac7f33a5c85df02d040827be/cronitor-4.9.0.tar.gz", hash = "sha256:3ad4e4c796671f98fa1be5ee6ac49d476e67d8e61f863fe34b616b4b9484c5cb", size = 23005, upload-time = "2025-10-08T01:51:35.073Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d8/d8/1c6eb7e1f94575cc83cc938db53acf24c7000faf87cc884e8a83a0d37b0d/cronitor-4.9.0-py2.py3-none-any.whl", hash = "sha256:79f16e3b8745bcf78daa1c9686d46dea9c45a8546d03ea7a1c52f15aab11bfdc", size = 22010, upload-time = "2025-10-08T01:51:34.16Z" },
-]
-
-[[package]]
 name = "cryptography"
 version = "49.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -538,7 +523,6 @@ dependencies = [
     { name = "celery" },
     { name = "channels" },
     { name = "channels-redis" },
-    { name = "cronitor" },
     { name = "django" },
     { name = "django-cors-headers" },
     { name = "django-extensions" },
@@ -574,7 +558,6 @@ requires-dist = [
     { name = "celery", specifier = ">=5.5" },
     { name = "channels", specifier = ">=4.2" },
     { name = "channels-redis", specifier = ">=4.2" },
-    { name = "cronitor", specifier = ">=4.7" },
     { name = "daphne", marker = "extra == 'production'", specifier = ">=4.1" },
     { name = "django", specifier = ">=5.2,<6.0" },
     { name = "django-cors-headers", specifier = ">=4.7" },
@@ -702,15 +685,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/6d/b7/a4a3f632f823e432ce6bc65f62961b7980c898c77f075a2f7118cb3846fe/gunicorn-26.0.0.tar.gz", hash = "sha256:ca9346f85e3a4aeeb64d491045c16b9a35647abd37ea15efe53080eb8b090baf", size = 727286, upload-time = "2026-05-05T06:38:25.529Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e6/40/9c2384fc2be4ad25dd4a49decd5ad9ea5a3639814c11bd40ab77cb9f0a14/gunicorn-26.0.0-py3-none-any.whl", hash = "sha256:40233d26a5f0d1872916188c276e21641155111c2853f0c2cd55260aec0d24fc", size = 212009, upload-time = "2026-05-05T06:38:23.007Z" },
-]
-
-[[package]]
-name = "humanize"
-version = "4.16.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/0a/ea/13a1ef3c12d12662905801495283530251918b70d62d368f1d2e0272c70d/humanize-4.16.0.tar.gz", hash = "sha256:7dc2244a2f84a4bfb1d36c37bac80cd78e35cdc5c119206d87b018e1445f3a3f", size = 89515, upload-time = "2026-06-30T16:17:29.859Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b0/aa/0b7365d30fed43e7a3449aba1fe20a0a7174d9cf13e282af4e69ac825441/humanize-4.16.0-py3-none-any.whl", hash = "sha256:353eb2f34c09d098b2880eee8bef21832eae6d174f48c5762fff7e5fcb74d01d", size = 137209, upload-time = "2026-06-30T16:17:28.36Z" },
 ]
 
 [[package]]

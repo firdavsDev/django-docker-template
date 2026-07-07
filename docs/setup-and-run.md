@@ -31,7 +31,7 @@ No env vars, no services required. Without `POSTGRES_HOST` set, local settings a
 
 - **SQLite** (`db.sqlite3`) instead of PostgreSQL
 - **In-memory cache** + DB sessions instead of Redis
-- Insecure default `SECRET_KEY`, cronitor disabled
+- Insecure default `SECRET_KEY`
 
 Useful commands:
 
@@ -80,7 +80,7 @@ git clone <repo> && cd <repo>
 
 # real production env files (required — django won't start without them)
 cp -r ".envs/.production(example)" .envs/.production
-# edit .envs/.production/.django  → SECRET_KEY, DEBUG=False, SERVER_IP, SERVER_DOMAIN, SENTRY_DSN, CRONITOR_API_KEY
+# edit .envs/.production/.django  → SECRET_KEY, DEBUG=False, SERVER_IP, SERVER_DOMAIN, SENTRY_DSN
 # edit .envs/.production/.postgres → real DB name/user/password, POSTGRES_HOST=postgres
 
 # TLS certs for nginx (see compose/production/nginx/)

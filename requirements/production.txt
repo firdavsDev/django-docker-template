@@ -58,8 +58,6 @@ colorama==0.4.6 ; sys_platform == 'win32'
     # via click
 constantly==23.10.4
     # via twisted
-cronitor==4.9.0
-    # via django-docker-template
 cryptography==49.0.0
     # via
     #   autobahn
@@ -99,8 +97,6 @@ drf-spectacular==0.30.0
     # via django-docker-template
 gunicorn==26.0.0
     # via django-docker-template
-humanize==4.16.0
-    # via cronitor
 hyperlink==21.0.0
     # via
     #   autobahn
@@ -145,7 +141,6 @@ python-dateutil==2.9.0.post0
     # via celery
 pyyaml==6.0.3
     # via
-    #   cronitor
     #   django-docker-template
     #   drf-spectacular
 redis==8.0.1
@@ -157,9 +152,7 @@ referencing==0.37.0
     #   jsonschema
     #   jsonschema-specifications
 requests==2.34.2
-    # via
-    #   cronitor
-    #   django-docker-template
+    # via django-docker-template
 rpds-py==2026.6.3
     # via
     #   jsonschema
@@ -200,7 +193,6 @@ uritemplate==4.2.0
     # via drf-spectacular
 urllib3==2.7.0
     # via
-    #   cronitor
     #   requests
     #   sentry-sdk
 vine==5.1.0

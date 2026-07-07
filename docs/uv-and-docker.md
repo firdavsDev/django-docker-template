@@ -19,7 +19,7 @@ make venv        # = uv sync --group dev  → creates .venv/ from uv.lock
 make run-local   # = migrate + runserver via uv run
 ```
 
-Zero configuration needed: without `POSTGRES_HOST` the local settings fall back to SQLite (`db.sqlite3`), `SECRET_KEY` gets an insecure dev default, and cronitor is skipped when `CRONITOR_API_KEY` is unset.
+Zero configuration needed: without `POSTGRES_HOST` the local settings fall back to SQLite (`db.sqlite3`) and `SECRET_KEY` gets an insecure dev default.
 
 Run anything inside the project environment with `uv run`:
 

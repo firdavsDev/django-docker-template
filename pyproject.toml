@@ -22,7 +22,6 @@ dependencies = [
     # Background tasks (celery)
     "celery>=5.5",
     "redis>=5.2",
-    "cronitor>=4.7",
     # Misc
     "whitenoise>=6.9",
     "requests>=2.32",

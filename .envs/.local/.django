@@ -4,4 +4,3 @@ PROJECT_NAME={name}_api
 DJANGO_SETTINGS_MODULE=config.settings.local
 SECRET_KEY=dd6$(s#5y(7u#u_l9xql@m0b9)gm528s&k#2@y!*-9t$n6gh*0
 DEBUG=True
-CRONITOR_API_KEY=

@@ -41,8 +41,6 @@ click-repl==0.3.0
     # via celery
 colorama==0.4.6 ; sys_platform == 'win32'
     # via click
-cronitor==4.9.0
-    # via django-docker-template
 diff-match-patch==20241021
     # via django-import-export
 django==5.2.16
@@ -73,8 +71,6 @@ djangorestframework==3.17.1
     #   drf-spectacular
 drf-spectacular==0.30.0
     # via django-docker-template
-humanize==4.16.0
-    # via cronitor
 idna==3.18
     # via requests
 inflection==0.5.1
@@ -101,7 +97,6 @@ python-dateutil==2.9.0.post0
     # via celery
 pyyaml==6.0.3
     # via
-    #   cronitor
     #   django-docker-template
     #   drf-spectacular
 redis==8.0.1
@@ -113,9 +108,7 @@ referencing==0.37.0
     #   jsonschema
     #   jsonschema-specifications
 requests==2.34.2
-    # via
-    #   cronitor
-    #   django-docker-template
+    # via django-docker-template
 rpds-py==2026.6.3
     # via
     #   jsonschema
@@ -141,9 +134,7 @@ tzlocal==5.4.4
 uritemplate==4.2.0
     # via drf-spectacular
 urllib3==2.7.0
-    # via
-    #   cronitor
-    #   requests
+    # via requests
 vine==5.1.0
     # via
     #   amqp
