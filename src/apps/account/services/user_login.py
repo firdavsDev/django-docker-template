@@ -1,10 +1,16 @@
 from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+def tokens_for_user(user) -> dict:
+    """Mint a fresh JWT access/refresh pair for the given user."""
+    refresh = RefreshToken.for_user(user)
+    return {"access": str(refresh.access_token), "refresh": str(refresh)}
 
 
 def login(email: str, password: str, request=None) -> dict:
-    """Authenticate by email/password and return the user + auth token.
+    """Authenticate by email/password and return the user + JWT token pair.
 
     Raises AuthenticationFailed on bad credentials or a disabled account.
     The view layer wraps the result via CustomResponseMixin.
@@ -15,5 +21,4 @@ def login(email: str, password: str, request=None) -> dict:
     if not user.is_active:
         raise AuthenticationFailed("This account is disabled.")
 
-    token, _ = Token.objects.get_or_create(user=user)
-    return {"user": user, "token": token.key}
+    return {"user": user, **tokens_for_user(user)}

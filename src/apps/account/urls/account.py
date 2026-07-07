@@ -1,28 +1,33 @@
 from django.urls import path
 
-from ..views import account
+from .. import views
 
 app_name = "account"
 
 urlpatterns = [
     path(
         "register/",
-        view=account.register_api_view,
+        view=views.register_api_view,
         name="register",
     ),
     path(
         "login/",
-        view=account.user_login_api_view,
+        view=views.user_login_api_view,
         name="login_view",
     ),
     path(
+        "token/refresh/",
+        view=views.token_refresh_api_view,
+        name="token_refresh",
+    ),
+    path(
         "logout/",
-        view=account.user_logout_view,
+        view=views.user_logout_view,
         name="user_logout",
     ),
     path(
         "me/",
-        view=account.me_api_view,
+        view=views.me_api_view,
         name="me",
     ),
 ]

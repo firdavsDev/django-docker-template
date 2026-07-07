@@ -29,6 +29,7 @@ Everything runs through Docker Compose (`local.yml`), wrapped by the Makefile:
 - App logs: rotating `logs/access.log` + `logs/errors.log` (5MB x 5), config in `config/settings/logging_conf.py`; production bind-mounts `./logs`, entrypoint chowns it (root → gosu django).
 - Setup/run guides: `docs/setup-and-run.md`, `docs/uv-and-docker.md`.
 - Custom user model: `account.User` (`AUTH_USER_MODEL`).
+- Auth: JWT via `djangorestframework-simplejwt` (access 60min / refresh 7d, rotation + blacklist; `Authorization: Bearer <access>`). Endpoints under `/api/v1/account/`: `register/` (auto-login), `login/`, `token/refresh/`, `logout/` (blacklists refresh), `me/`. Lifetimes env-overridable (`ACCESS_TOKEN_MINUTES`, `REFRESH_TOKEN_DAYS`); config in `SIMPLE_JWT` (base.py). Logout only revokes the refresh token — stateless access stays valid until expiry.
 
 ## Structure conventions
 

@@ -53,6 +53,7 @@ django==5.2.16
     #   django-import-export
     #   djangochannelsrestframework
     #   djangorestframework
+    #   djangorestframework-simplejwt
     #   drf-spectacular
 django-cors-headers==4.9.0
     # via django-docker-template
@@ -68,7 +69,10 @@ djangorestframework==3.17.1
     # via
     #   django-docker-template
     #   djangochannelsrestframework
+    #   djangorestframework-simplejwt
     #   drf-spectacular
+djangorestframework-simplejwt==5.5.1
+    # via django-docker-template
 drf-spectacular==0.30.0
     # via django-docker-template
 idna==3.18
@@ -93,6 +97,8 @@ psycopg==3.3.4
     # via django-docker-template
 psycopg-binary==3.3.4 ; implementation_name != 'pypy'
     # via psycopg
+pyjwt==2.13.0
+    # via djangorestframework-simplejwt
 python-dateutil==2.9.0.post0
     # via celery
 pyyaml==6.0.3
