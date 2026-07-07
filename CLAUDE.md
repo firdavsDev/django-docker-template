@@ -13,7 +13,7 @@ Everything runs through Docker Compose (`local.yml`), wrapped by the Makefile:
 - `make build` — build + run stack (django, postgres, redis, celery, celery-beat) at http://localhost:8000
 - `make up` / `make down` / `make down-v` (wipes volumes) / `make logs`
 - `make makemigrations` / `make migrate` / `make superuser` / `make shell` (shell_plus)
-- One-off commands: `docker-compose -f local.yml run --rm django python manage.py <cmd>` (legacy hyphenated `docker-compose`)
+- One-off commands: `docker compose -f local.yml run --rm django python manage.py <cmd>` (Compose v2 — space form, not `docker-compose`)
 - No-Docker local run: `make venv` (uv sync) then `make run-local` — zero env vars needed (SQLite fallback kicks in when `POSTGRES_HOST` unset; insecure default `SECRET_KEY`).
 - Dependencies: managed by **uv** — `pyproject.toml` + `uv.lock` are the source of truth (`production` extra, `dev` group). `requirements/*.txt` are generated artifacts — never edit by hand; run `make lock` after changing pyproject.toml.
 - Lint/format: **ruff** (config in pyproject.toml — line length 120, isort + pyupgrade + django rules, max-complexity 10). `uv run ruff check --fix` + `uv run ruff format`, or `pre-commit run --all-files`. Replaces black/isort/autoflake/flake8.

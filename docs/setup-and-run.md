@@ -91,7 +91,7 @@ Required env vars in production (startup crashes without them — intentional): 
 ### Deploy / redeploy
 
 ```bash
-docker-compose -f production.yml up -d --build
+docker compose -f production.yml up -d --build
 ```
 
 Code is baked into the image (no source bind mount) — every code change needs `--build`. The start script runs `collectstatic` + `migrate` automatically.
@@ -108,7 +108,7 @@ tail -f logs/errors.log   # application errors
 The container entrypoint chowns `./logs` automatically (starts as root, then drops to the `django` user via gosu). Container stdout is capped at 5MB × 5 files per service:
 
 ```bash
-docker-compose -f production.yml logs -f django
+docker compose -f production.yml logs -f django
 ```
 
 ### Backups

@@ -79,7 +79,7 @@ make lock && make build
 One-off commands inside the container:
 
 ```bash
-docker-compose -f local.yml run --rm django python manage.py makemigrations
+docker compose -f local.yml run --rm django python manage.py makemigrations
 make migrate
 make superuser
 make shell
@@ -88,10 +88,8 @@ make shell
 ### Production (`production.yml`)
 
 ```bash
-# one-time on the server: writable log dir for the container user
-mkdir -p logs && chmod 777 logs
-
-docker-compose -f production.yml up -d --build
+mkdir -p logs   # entrypoint chowns it to the container user automatically
+docker compose -f production.yml up -d --build
 ```
 
 Key differences from local:
@@ -109,7 +107,7 @@ Django writes rotating logs (5MB × 5 files each) to `logs/` in the **project ro
 - Local (Docker or plain python): `logs/` appears in the repo automatically.
 - Production: `./logs` is bind-mounted into django, celery, and celery-beat containers; the entrypoint chowns it to the container user automatically. Read logs on the host with `tail -f logs/errors.log` — no need to enter containers or volumes.
 
-Container stdout (request logs, celery output) is separate — view with `make logs` / `docker-compose -f production.yml logs -f <service>`.
+Container stdout (request logs, celery output) is separate — view with `make logs` / `docker compose -f production.yml logs -f <service>`.
 
 ## 3. Cheat sheet
 
@@ -120,6 +118,6 @@ Container stdout (request logs, celery output) is separate — view with `make l
 | Add a package | `uv add <pkg>` then `make lock` |
 | Upgrade all packages | `uv lock --upgrade && make lock` |
 | Run tests / manage.py locally | `uv run python manage.py <cmd>` |
-| Run manage.py in Docker | `docker-compose -f local.yml run --rm django python manage.py <cmd>` |
+| Run manage.py in Docker | `docker compose -f local.yml run --rm django python manage.py <cmd>` |
 | See app error logs | `tail -f logs/errors.log` |
-| Deploy production | `mkdir -p logs && chmod 777 logs && docker-compose -f production.yml up -d --build` |
+| Deploy production | `mkdir -p logs && docker compose -f production.yml up -d --build` |

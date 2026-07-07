@@ -12,8 +12,8 @@ Production-ready Django template: Django 5.2 LTS · DRF · PostgreSQL · Redis (
     ├── docs                    # Setup & usage guides
     ├── pyproject.toml          # Dependencies (uv) — uv.lock is the lockfile
     ├── requirements            # Generated exports from uv.lock (do not edit)
-    ├── local.yml               # docker-compose for local development
-    ├── production.yml          # docker-compose for production
+    ├── local.yml               # Docker Compose for local development
+    ├── production.yml          # Docker Compose for production
     └── Makefile                # Shortcuts for everything below
 
 ## Prerequisites
@@ -59,7 +59,7 @@ uv run pre-commit run --all-files # run manually
 See [docs/setup-and-run.md](docs/setup-and-run.md#4-production). Short version: fill `.envs/.production/` (copy from `.envs/.production(example)/`, generate secrets with `openssl rand -hex 32`), add TLS certs, then:
 
 ```bash
-docker-compose -f production.yml up -d --build
+docker compose -f production.yml up -d --build
 ```
 
 Deployment repo: https://github.com/firdavsDev/docker-template-deployment
