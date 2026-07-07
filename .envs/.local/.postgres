@@ -4,4 +4,4 @@ POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
 POSTGRES_DB={name}_api_db
 POSTGRES_USER={name}_api_user
-POSTGRES_PASSWORD=$kbod%eo41s^m^vcrgv@h8y+=*!_9%6cs5*g2wp%hjv+lhy1=)
+POSTGRES_PASSWORD=accc82069291f4b6a457c5f87a10c03e60552d4b33a5707f

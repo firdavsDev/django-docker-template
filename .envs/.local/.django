@@ -2,5 +2,5 @@
 # ------------------------------------------------------------------------------
 PROJECT_NAME={name}_api
 DJANGO_SETTINGS_MODULE=config.settings.local
-SECRET_KEY=dd6$(s#5y(7u#u_l9xql@m0b9)gm528s&k#2@y!*-9t$n6gh*0
+SECRET_KEY=d784de8df633dc10c7fa00a93a79ba3b6f42e9df27fe8325b69b2e0d2bcc088a
 DEBUG=True
