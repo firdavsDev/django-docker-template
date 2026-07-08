@@ -571,7 +571,7 @@ requires-dist = [
     { name = "drf-spectacular", specifier = ">=0.28" },
     { name = "gunicorn", marker = "extra == 'production'", specifier = ">=23.0" },
     { name = "pillow", specifier = ">=11.0" },
-    { name = "psycopg", extras = ["binary"], specifier = ">=3.2" },
+    { name = "psycopg", extras = ["binary"], specifier = ">=3.3.4" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "redis", specifier = ">=5.2" },
     { name = "requests", specifier = ">=2.32" },
