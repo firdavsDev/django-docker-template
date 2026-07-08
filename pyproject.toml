@@ -5,7 +5,7 @@ description = "Django + Docker project template"
 requires-python = ">=3.12"
 dependencies = [
     # Django
-    "django>=5.2,<6.0",
+    "django>=6.0.7,<7.0",
     "django-extensions>=4.1",
     "django-import-export>=4.3",
     "django-filter>=25.1",
