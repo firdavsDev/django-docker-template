@@ -40,6 +40,16 @@ uv remove requests                 # remove a dependency
 uv lock --upgrade                  # upgrade everything within pyproject constraints
 ```
 
+> ⚠️ **Never hand-edit `requirements/*.txt`.** They are generated exports, overwritten on every `make lock`. To add a package you edit `pyproject.toml` (via `uv add` or by hand) — never the `.txt` files. Pick the bucket by where the package runs:
+
+| Where it runs | `pyproject.toml` section | Add with | Exports to |
+|---|---|---|---|
+| Runtime (prod + dev) | `[project].dependencies` | `uv add <pkg>` | `base.txt`, `local.txt`, `production.txt` |
+| Dev only (lint, debug, ipython) | `[dependency-groups].dev` | `uv add --group dev <pkg>` | `local.txt` |
+| Production only (gunicorn, sentry, daphne) | `[project.optional-dependencies].production` | `uv add --optional production <pkg>` | `production.txt` |
+
+Pin a floor with `>=` (e.g. `uv add "psycopg[binary]>=3.3"`) to match the existing style in `pyproject.toml`. Editing the section by hand instead of `uv add` is fine — `make lock` reconciles `uv.lock` and the exports either way.
+
 After **any** dependency change, regenerate the lock and the exported requirements files:
 
 ```bash
