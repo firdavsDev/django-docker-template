@@ -1,31 +1,41 @@
-version: "3.8"
-
 volumes:
   static_volume: {}
   media_volume: {}
   certs: {}
-  local_postgres_data: {}
-  local_postgres_data_backups: {}
+  production_postgres_data: {}
+  production_postgres_data_backups: {}
+
+# Cap container stdout logs: 5MB x 5 files per service
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "5m"
+    max-file: "5"
 
 services:
-  django: &django
+  django:
     build:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
     image: name_django
     restart: always
     container_name: django
+    logging: *default-logging
     depends_on:
       - postgres
     volumes:
-      - .:/app:cached
+      # NOTE: no source bind mount in production — code is baked into the image.
+      # Entrypoint chowns ./logs to the django user automatically.
+      - ./logs:/home/app/web/logs
       - static_volume:/home/app/web/src/static
       - media_volume:/home/app/web/src/media
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
     ports:
-      - "8000:8000"
+      # bound to localhost only: Docker published ports bypass UFW,
+      # so 8000:8000 would be reachable from the internet
+      - "127.0.0.1:8000:8000"
     command: /start
 
   postgres:
@@ -35,9 +45,10 @@ services:
     image: name_postgres
     restart: always
     container_name: postgres
+    logging: *default-logging
     volumes:
-      - local_postgres_data:/var/lib/postgresql/data:cached
-      - local_postgres_data_backups:/backups:cached
+      - production_postgres_data:/var/lib/postgresql/data
+      - production_postgres_data_backups:/backups
     env_file:
       - ./.envs/.production/.postgres
 
@@ -48,6 +59,7 @@ services:
     image: name_nginx
     restart: always
     container_name: nginx
+    logging: *default-logging
     volumes:
       - static_volume:/home/app/web/src/static
       - media_volume:/home/app/web/src/media
@@ -59,11 +71,11 @@ services:
       - django
 
   redis:
-    image: redis:6.2-alpine
+    image: redis:7-alpine
     restart: always
     container_name: name_redis
-    ports:
-      - "6379:6379"
+    logging: *default-logging
+    # No public port: reachable from other services via the compose network only
 
   celery:
     build:
@@ -72,8 +84,10 @@ services:
     command: celery -A config worker -l info
     container_name: name_celery
     restart: always
+    logging: *default-logging
     volumes:
-      - .:/app:cached
+      - ./logs:/home/app/web/logs
+      - media_volume:/home/app/web/src/media
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
@@ -88,8 +102,9 @@ services:
     command: celery -A config beat -l info
     container_name: name_celery_beat
     restart: always
+    logging: *default-logging
     volumes:
-      - .:/app:cached
+      - ./logs:/home/app/web/logs
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres

@@ -279,3 +279,5 @@ env
 
 server_credentials/
 .envs/.production
+# deploy script state (env checksum)
+.deploy_state

@@ -7,7 +7,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 # API URLS
 urlpatterns = [
-    path('admin/panel/', admin.site.urls),
+    path("admin/panel/", admin.site.urls),
     path("api/v1/", include("src.apps.v1"), name="src"),
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path(
@@ -37,10 +37,9 @@ urlpatterns = [
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if settings.DEBUG:
+if settings.DEBUG and "debug_toolbar" in settings.INSTALLED_APPS:
     # This allows the error pages to be debugged during development, just visit
     # these url in browser to see how these error pages look like.
     urlpatterns += [
-        path('__debug__/', include('debug_toolbar.urls')),
-
+        path("__debug__/", include("debug_toolbar.urls")),
     ]

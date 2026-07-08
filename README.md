@@ -1,73 +1,66 @@
-![Django project](https://github.com/name/name_api.git)
+# Django Docker Template
 
-# Name EXTENSION API
+Production-ready Django template: Django 5.2 LTS · DRF · PostgreSQL · Redis (cache, sessions, celery) · Celery · uv · Docker Compose · nginx.
 
-
-Folder Structure Conventions
-============================
-
-> Folder structure options and naming conventions for the current project
-
-### A typical top-level directory layout
+## Folder structure
 
     .
-    ├── .envs                   # Environment veriables
-    ├── compose                 # Docker files and bash commands
-    ├── requirements            # Third party libraries
-    ├── config                  # Project configuration files 
-    ├── src                     # Project applicateions directory ('lib' or 'apps') 
-    ├── local.yml               # docker-compose (running in local)
-    ├── production.yml          # docker-compose (to deploy in production)
-    └── README.md
-    └── ...
-
-## Outline
-
-- Prerequisites
-- Setup
-    - Development
-    - Production
-- Documentation
+    ├── .envs                   # Environment variables (.local/ + .production(example)/)
+    ├── compose                 # Dockerfiles and start/entrypoint scripts
+    ├── config                  # Django project (settings/, celery, urls, wsgi/asgi)
+    ├── src                     # Apps live in src/apps/<name>/ (account = reference app)
+    ├── docs                    # Setup & usage guides
+    ├── pyproject.toml          # Dependencies (uv) — uv.lock is the lockfile
+    ├── requirements            # Generated exports from uv.lock (do not edit)
+    ├── local.yml               # Docker Compose for local development
+    ├── production.yml          # Docker Compose for production
+    └── Makefile                # Shortcuts for everything below
 
 ## Prerequisites
 
-This project has the following prerequisites
+- [uv](https://docs.astral.sh/uv/) (for running without Docker, and for dependency management)
+- Docker + Docker Compose (for the containerized setups)
 
-- python 3.9.8
-- docker 19.03.12
-- docker-compose 1.25.0
+## Quick start
 
-## Setup
+**Without Docker** (SQLite + in-memory cache fallbacks, zero config):
 
-- Type the command below to setup the project locally:
-
--  docker-compose -f local.yml up --build
-
-### Development
-
-- Install virtual environment:
-
-```
-git clone https://github.com/orginazation/name_api.git
-cd root folder
-python -m venv --prompt="v" .env
+```bash
+make venv        # uv sync
+make run-local   # migrate + runserver → http://127.0.0.1:8000
 ```
 
-- If *pre commit* has not been installed please install by running following command:
+**With Docker** (full stack: postgres, redis, celery, celery-beat):
 
-```
-pip install pre-commit
-pre-commmit install
-```
-
-- Type the command below to deploy the project locally:
-
-```
-docker-compose -f local.yml up -d
+```bash
+make build       # → http://localhost:8000
 ```
 
-- You should be good to go now
-- http://localhost:8000
+Useful targets: `make up`, `make down`, `make logs`, `make migrate`, `make makemigrations`, `make superuser`, `make shell`, `make lock` (relock deps after editing pyproject.toml).
 
-### Production
-- https://github.com/firdavsDev/docker-template-deployment
+## Documentation
+
+- [Setup & run guide](docs/setup-and-run.md) — template setup, local (with/without Docker), production deploy, logs, backups
+- [uv & Docker guide](docs/uv-and-docker.md) — dependency management workflow, compose details
+- [VDS deployment guide](docs/DEPLOY.md) — Ubuntu server from zero: Docker, nginx + certbot, UFW, fail2ban, and one-command updates via `./scripts/deploy.sh`
+
+API docs (staff login required): http://localhost:8000/api/docs/ · Admin: http://localhost:8000/admin/panel/
+
+## Linting & formatting
+
+[ruff](https://docs.astral.sh/ruff/) handles linting, import sorting, and formatting (config in pyproject.toml):
+
+```bash
+uv run pre-commit install         # run on every commit
+uv run pre-commit run --all-files # run manually
+```
+
+## Production
+
+See [docs/setup-and-run.md](docs/setup-and-run.md#4-production). Short version: fill `.envs/.production/` (copy from `.envs/.production(example)/`, generate secrets with `openssl rand -hex 32`), add TLS certs, then:
+
+```bash
+docker compose -f production.yml up -d --build
+```
+
+Deployment repo: https://github.com/firdavsDev/docker-template-deployment

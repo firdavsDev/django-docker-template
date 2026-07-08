@@ -5,7 +5,7 @@ from django.utils.deconstruct import deconstructible
 
 
 @deconstructible
-class PathAndRename(object):
+class PathAndRename:
     """File rename & repath
 
     Args:
@@ -16,7 +16,6 @@ class PathAndRename(object):
         self.path = sub_path
 
     def __call__(self, instance, filename):
-        ext = filename.split(".")[-1]
-        filename = filename.split(".")[0]
-        filename = f"{filename}_{uuid4().hex[:4]}.{ext}"
+        name, ext = os.path.splitext(filename)
+        filename = f"{name}_{uuid4().hex[:4]}{ext}"
         return os.path.join(self.path, filename)

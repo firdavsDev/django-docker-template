@@ -4,7 +4,7 @@ from django.contrib.auth.base_user import BaseUserManager
 class UserManager(BaseUserManager):
     def _create_user(self, email, password, **extra_fields):
         if not email:
-            raise ValueError("The given phone number must be set")
+            raise ValueError("The given email must be set")
 
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -26,13 +26,3 @@ class UserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(email, password, **extra_fields)
-
-    def get_or_create(self, email, password, **kwargs):
-        try:
-            instance = self.model.objects.get(email=email)
-            return instance, False
-        except self.model.DoesNotExist:
-            instance = self.model.objects.create_user(
-                email=email, password=password, **kwargs
-            )
-            return instance, True

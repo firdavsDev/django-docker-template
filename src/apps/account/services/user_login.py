@@ -1,23 +1,24 @@
-from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.tokens import RefreshToken
 
-from ...account.models import User
-from ...common.utils import FAILURE_BODY, SUCCESS_BODY
+
+def tokens_for_user(user) -> dict:
+    """Mint a fresh JWT access/refresh pair for the given user."""
+    refresh = RefreshToken.for_user(user)
+    return {"access": str(refresh.access_token), "refresh": str(refresh)}
 
 
-def login(email: str, password: str):
-    user = User.objects.filter(email=email)
-    if user.exists() is False:
-        additional_data = dict(message="login failed, incorrect login or password")
-        SUCCESS_BODY.update(**additional_data)
-        return FAILURE_BODY
+def login(email: str, password: str, request=None) -> dict:
+    """Authenticate by email/password and return the user + JWT token pair.
 
-    user = User.objects.filter(email=email).first()
-    if user.check_password(password) is False:
-        additional_data = dict(message="login failed, incorrect login or password")
-        SUCCESS_BODY.update(**additional_data)
-        return FAILURE_BODY
+    Raises AuthenticationFailed on bad credentials or a disabled account.
+    The view layer wraps the result via CustomResponseMixin.
+    """
+    user = authenticate(request=request, email=email, password=password)
+    if user is None:
+        raise AuthenticationFailed("Authentication failed: user does not exist or password is incorrect.")
+    if not user.is_active:
+        raise AuthenticationFailed("This account is disabled.")
 
-    token, _ = Token.objects.get_or_create(user=user)
-    additional_data = dict(id=user.id, token=token.key)
-    SUCCESS_BODY.update(**additional_data)
-    return SUCCESS_BODY
+    return {"user": user, **tokens_for_user(user)}

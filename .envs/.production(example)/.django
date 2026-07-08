@@ -1,7 +1,0 @@
-PROJECT_NAME={name}_api
-DJANGO_SETTINGS_MODULE=config.settings.production
-SECRET_KEY=59f!_a(d79j#^fa*ckrap7l1-2xu=$@&hh_#7h)ei5m)%k8u2#
-DEBUG=True                      # it is temporary
-SERVER_IP={ip_numbers}
-SERVER_DOMAIN={domen}
-CRONITOR_API_KEY=number_of_id

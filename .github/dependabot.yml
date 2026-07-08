@@ -1,26 +1,27 @@
 # Config for Dependabot updates. See Documentation here:
-# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
   # Update GitHub actions in workflows
   - package-ecosystem: "github-actions"
     directory: "/"
-    # Every weekday
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
-  # Enable version updates for Docker
-  # We need to specify each Dockerfile in a separate entry because Dependabot doesn't
-  # support wildcards or recursively checking subdirectories. Check this issue for updates:
-  # https://github.com/dependabot/dependabot-core/issues/2178
-  - package-ecosystem: "docker"
-    # Look for a `Dockerfile` in the `compose/local/` directory
-    directory: "compose/local/"
-    # Every weekday
+  # Python dependencies — managed by uv (pyproject.toml + uv.lock).
+  # requirements/*.txt are generated artifacts; do not watch them with pip.
+  - package-ecosystem: "uv"
+    directory: "/"
     schedule:
-      interval: "daily"
-    # Ignore minor version updates (3.10 -> 3.11) but update patch versions
+      interval: "weekly"
+
+  # Docker base images. Dependabot can't recurse, so one entry per Dockerfile.
+  - package-ecosystem: "docker"
+    directory: "compose/local/"
+    schedule:
+      interval: "weekly"
+    # Ignore major/minor Python image bumps; patch updates only
     ignore:
       - dependency-name: "*"
         update-types:
@@ -28,17 +29,21 @@ updates:
           - "version-update:semver-minor"
 
   - package-ecosystem: "docker"
-    # Look for a `Dockerfile` in the `compose/production/postgres` directory
-    directory: "compose/production/postgres/"
-    # Every weekday
+    directory: "compose/production/django/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
 
-  # Enable version updates for Python/Pip - Production
-  - package-ecosystem: "pip"
-    # Look for a `requirements.txt` in the `root` directory
-    # also 'setup.cfg', 'runtime.txt' and 'requirements/*.txt'
-    directory: "/"
-    # Every weekday
+  - package-ecosystem: "docker"
+    directory: "compose/production/postgres/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+
+  - package-ecosystem: "docker"
+    directory: "compose/production/nginx/"
+    schedule:
+      interval: "weekly"

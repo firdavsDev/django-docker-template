@@ -1,1 +1,1 @@
-from ..managers.common import BaseManager  # noqa
+from .common import BaseManager  # noqa

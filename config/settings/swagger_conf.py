@@ -46,5 +46,4 @@ SPECTACULAR_SETTINGS = {
         r"^api/token/refresh/",
         r"^api/token/verify/",
     ],
-
 }

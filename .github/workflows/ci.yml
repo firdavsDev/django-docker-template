@@ -32,7 +32,7 @@ jobs:
         uses: pre-commit/action@v3.0.0
 
   # With no caching at all the entire ci process takes 4m 30s to complete!
-  pytest:
+  smoke-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -40,7 +40,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build the Stack
-        run: docker-compose -f local.yml build
+        run: docker compose -f local.yml build
+
+      - name: Django System Checks
+        run: docker compose -f local.yml run --rm django python manage.py check
 
       - name: Run DB Migrations
-        run: docker-compose -f local.yml run --rm django python manage.py migrate
+        run: docker compose -f local.yml run --rm django python manage.py migrate
