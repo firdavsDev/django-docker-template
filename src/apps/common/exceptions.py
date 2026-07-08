@@ -27,7 +27,7 @@ def _flatten_detail(detail) -> str:
             if message:
                 return message
         return ""
-    if isinstance(detail, (list, tuple)):
+    if isinstance(detail, list | tuple):
         for item in detail:
             message = _flatten_detail(item)
             if message:
