@@ -59,7 +59,7 @@ django-cors-headers==4.9.0
     # via django-docker-template
 django-extensions==4.1
     # via django-docker-template
-django-filter==25.2
+django-filter==26.1
     # via django-docker-template
 django-import-export==4.4.1
     # via django-docker-template

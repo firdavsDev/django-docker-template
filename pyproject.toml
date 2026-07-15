@@ -8,7 +8,7 @@ dependencies = [
     "django>=5.2,<6.0",
     "django-extensions>=4.1",
     "django-import-export>=4.3",
-    "django-filter>=25.1",
+    "django-filter>=26.1",
     # Django REST Framework
     "djangorestframework>=3.16",
     "djangorestframework-simplejwt>=5.3",
