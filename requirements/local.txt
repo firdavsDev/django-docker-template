@@ -171,7 +171,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==21.6.0
+virtualenv==21.6.1
     # via pre-commit
 wcwidth==0.8.2
     # via prompt-toolkit
