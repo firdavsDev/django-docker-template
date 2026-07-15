@@ -120,7 +120,7 @@ pyjwt==2.13.0
     # via djangorestframework-simplejwt
 python-dateutil==2.9.0.post0
     # via celery
-python-discovery==1.4.3
+python-discovery==1.4.4
     # via virtualenv
 pyyaml==6.0.3
     # via
