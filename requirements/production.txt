@@ -163,7 +163,7 @@ rpds-py==2026.6.3
     # via
     #   jsonschema
     #   referencing
-sentry-sdk==2.64.0
+sentry-sdk==2.65.0
     # via django-docker-template
 service-identity==26.1.0
     # via twisted
