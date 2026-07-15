@@ -183,7 +183,7 @@ typing-extensions==4.16.0
     #   pyopenssl
     #   referencing
     #   twisted
-tzdata==2026.2
+tzdata==2026.3
     # via
     #   django
     #   kombu
