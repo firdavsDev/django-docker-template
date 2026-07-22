@@ -63,7 +63,7 @@ cryptography==49.0.0
     #   autobahn
     #   pyopenssl
     #   service-identity
-daphne==4.2.2
+daphne==4.2.3
     # via django-docker-template
 diff-match-patch==20241021
     # via django-import-export

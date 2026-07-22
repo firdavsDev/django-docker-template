@@ -34,7 +34,7 @@ dependencies = [
 production = [
     "gunicorn>=23.0",
     "sentry-sdk>=2.0",
-    "daphne>=4.1",
+    "daphne>=4.2.3",
 ]
 
 [dependency-groups]
