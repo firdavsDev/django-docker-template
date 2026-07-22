@@ -33,7 +33,7 @@ dependencies = [
 [project.optional-dependencies]
 production = [
     "gunicorn>=23.0",
-    "sentry-sdk>=2.0",
+    "sentry-sdk>=2.66.0",
     "daphne>=4.1",
 ]
 
