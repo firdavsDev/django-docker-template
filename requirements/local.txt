@@ -87,7 +87,7 @@ filelock==3.29.6
     #   virtualenv
 identify==2.6.19
     # via pre-commit
-idna==3.18
+idna==3.19
     # via requests
 inflection==0.5.1
     # via drf-spectacular
