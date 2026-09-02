@@ -18,27 +18,22 @@ DATABASES["default"].update(  # noqa: F405
 
 DEBUG = os.environ.get("DEBUG", "False").lower() in ("true", "1", "yes")
 
-ALLOWED_HOSTS = [SERVER_IP, SERVER_DOMAIN]
+ALLOWED_HOSTS = [SERVER_IP, SERVER_DOMAIN, f"www.{SERVER_DOMAIN}"]
 
-# Allow ip and domain
-ALLOWED_IPS_AND_DOMAINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
-    f"https://www.{SERVER_DOMAIN}",
-    f"http://www.{SERVER_DOMAIN}",
+# Public browser origins — HTTPS only (the whole site forces TLS, so http
+# origins would only be dead entries that widen the attack surface).
+PUBLIC_ORIGINS = [
     f"https://{SERVER_DOMAIN}",
-    f"http://{SERVER_DOMAIN}",
+    f"https://www.{SERVER_DOMAIN}",
 ]
+# Extra SPA / frontend origins: comma-separated, full scheme, via env.
+EXTRA_ORIGINS = [o.strip() for o in os.environ.get("CORS_EXTRA_ORIGINS", "").split(",") if o.strip()]
+
 # CSRF
-CSRF_TRUSTED_ORIGINS = ALLOWED_IPS_AND_DOMAINS
+CSRF_TRUSTED_ORIGINS = PUBLIC_ORIGINS + EXTRA_ORIGINS
 # CORS
 CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
-] + ALLOWED_IPS_AND_DOMAINS
+CORS_ALLOWED_ORIGINS = PUBLIC_ORIGINS + EXTRA_ORIGINS
 
 # Swagger settings
 SPECTACULAR_SETTINGS["SERVERS"] = [  # noqa: F405
@@ -57,14 +52,23 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 # https://docs.djangoproject.com/en/dev/topics/security/#ssl-https
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-seconds
-# TODO: set this to 60 seconds first and then to 518400 once you prove the former works
-SECURE_HSTS_SECONDS = 60
+# Ramp: start at 60, confirm HTTPS is solid, then raise to 31536000 (1 year)
+# before submitting to the HSTS preload list. Env-tunable so the ramp needs
+# no redeploy.
+SECURE_HSTS_SECONDS = int(os.environ.get("SECURE_HSTS_SECONDS", "60"))
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-include-subdomains
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-preload
 SECURE_HSTS_PRELOAD = True
 # https://docs.djangoproject.com/en/dev/ref/middleware/#x-content-type-options-nosniff
 SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# API
+# ------------------------------------------------------------------------------
+# Drop the browsable API in production — JSON only.
+REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (  # noqa: F405
+    "rest_framework.renderers.JSONRenderer",
+)
 
 # STATIC
 # ------------------------

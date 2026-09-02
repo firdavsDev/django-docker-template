@@ -25,6 +25,9 @@ if not os.environ.get("POSTGRES_HOST"):
 # Allow all origins in local development only
 CORS_ALLOW_ALL_ORIGINS = True
 
+# No rate limiting in local dev.
+REST_FRAMEWORK["DEFAULT_THROTTLE_CLASSES"] = ()  # noqa: F405
+
 if DEBUG:
     import socket  # only if you haven't already imported this
 

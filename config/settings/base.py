@@ -42,6 +42,8 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        # SessionAuthentication kept for the browsable API + admin-authed Swagger.
+        # It only enforces CSRF for session-cookie requests; JWT calls bypass it.
         "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "src.apps.common.pagination.PageNumberPagination",
@@ -50,6 +52,19 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.SearchFilter",
     ),
+    # Rate limiting. Auth endpoints opt into the tighter "auth" scope via
+    # ScopedRateThrottle (see src/apps/account/views/). Rates are env-tunable;
+    # local.py disables throttling entirely for dev.
+    "DEFAULT_THROTTLE_CLASSES": (
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.ScopedRateThrottle",
+    ),
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": os.environ.get("THROTTLE_ANON", "60/min"),
+        "user": os.environ.get("THROTTLE_USER", "1000/min"),
+        "auth": os.environ.get("THROTTLE_AUTH", "10/min"),
+    },
 }
 
 # djangorestframework-simplejwt - JWT access/refresh with rotation + blacklist
@@ -122,6 +137,9 @@ DATABASES = {
         "PORT": os.environ.get("POSTGRES_PORT", "5432"),
         "USER": os.environ.get("POSTGRES_USER", "postgres"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
+        # Persistent connections — avoid a new PG connect per request.
+        "CONN_MAX_AGE": int(os.environ.get("CONN_MAX_AGE", "60")),
+        "CONN_HEALTH_CHECKS": True,
     }
 }
 

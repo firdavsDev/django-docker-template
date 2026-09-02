@@ -46,10 +46,8 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         default=False,
         verbose_name=_("superuser status"),
     )
-    date_joined = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name=_("date joined"),
-    )
+    # `created_at` (from BaseModel) is the join timestamp — no separate
+    # `date_joined` field.
 
     objects = UserManager()
 
