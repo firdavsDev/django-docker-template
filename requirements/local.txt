@@ -81,13 +81,13 @@ djangorestframework-simplejwt==5.5.1
     # via django-docker-template
 drf-spectacular==0.30.0
     # via django-docker-template
-filelock==3.29.6
+filelock==3.32.5
     # via
     #   python-discovery
     #   virtualenv
 identify==2.6.19
     # via pre-commit
-idna==3.18
+idna==3.19
     # via requests
 inflection==0.5.1
     # via drf-spectacular
@@ -101,14 +101,12 @@ msgpack==1.2.1
     # via channels-redis
 nodeenv==1.10.0
     # via pre-commit
-packaging==26.2
+packaging==26.3
     # via kombu
 pillow==12.3.0
     # via django-docker-template
 platformdirs==4.10.0
-    # via
-    #   python-discovery
-    #   virtualenv
+    # via virtualenv
 pre-commit==4.6.0
 prompt-toolkit==3.0.52
     # via click-repl
@@ -120,7 +118,7 @@ pyjwt==2.13.0
     # via djangorestframework-simplejwt
 python-dateutil==2.9.0.post0
     # via celery
-python-discovery==1.4.3
+python-discovery==1.6.0
     # via virtualenv
 pyyaml==6.0.3
     # via
@@ -141,7 +139,7 @@ rpds-py==2026.6.3
     # via
     #   jsonschema
     #   referencing
-ruff==0.15.20
+ruff==0.16.5
 six==1.17.0
     # via python-dateutil
 sqlparse==0.5.5
@@ -171,7 +169,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-virtualenv==21.6.1
+virtualenv==21.6.0
     # via pre-commit
 wcwidth==0.8.2
     # via prompt-toolkit

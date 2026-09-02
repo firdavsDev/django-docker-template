@@ -105,7 +105,7 @@ hyperlink==21.0.0
     # via
     #   autobahn
     #   twisted
-idna==3.18
+idna==3.19
     # via
     #   hyperlink
     #   requests
@@ -124,7 +124,7 @@ msgpack==1.2.1
     # via
     #   autobahn
     #   channels-redis
-packaging==26.2
+packaging==26.3
     # via
     #   gunicorn
     #   incremental
