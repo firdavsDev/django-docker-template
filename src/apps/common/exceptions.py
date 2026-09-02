@@ -1,5 +1,12 @@
+import logging
+
+from django.conf import settings
+from rest_framework import status
 from rest_framework.exceptions import APIException
+from rest_framework.response import Response
 from rest_framework.views import exception_handler as drf_exception_handler
+
+logger = logging.getLogger("src")
 
 
 class CustomException(APIException):
@@ -41,11 +48,20 @@ def custom_exception_handler(exc, context):
 
         {"status": "error", "message": "..."}
 
-    Non-DRF exceptions (response is None) are left to Django's 500 handling.
+    Non-DRF exceptions: re-raised under DEBUG so the traceback page shows;
+    otherwise logged (Sentry picks up the ERROR log) and returned as the same
+    JSON envelope with a 500 so API clients never get an HTML error page.
     """
     response = drf_exception_handler(exc, context)
     if response is None:
-        return None
+        if settings.DEBUG:
+            return None
+        request = context.get("request")
+        logger.exception("Unhandled exception at %s", getattr(request, "path", "?"))
+        return Response(
+            {"status": "error", "message": "Internal server error."},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
 
     detail = response.data
     payload = {

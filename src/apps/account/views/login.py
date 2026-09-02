@@ -1,5 +1,5 @@
-from rest_framework import renderers
 from rest_framework.permissions import AllowAny
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from ...common.mixins import CustomResponseMixin
@@ -10,7 +10,8 @@ from ..services.user_login import login
 class UserLoginAPIView(CustomResponseMixin, APIView):
     permission_classes = (AllowAny,)
     authentication_classes = ()
-    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer)
+    throttle_classes = (ScopedRateThrottle,)
+    throttle_scope = "auth"
     serializer_class = AuthTokenSerializer
 
     def post(self, request, *args, **kwargs):
