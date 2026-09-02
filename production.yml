@@ -64,6 +64,9 @@ services:
       - static_volume:/home/app/web/src/static
       - media_volume:/home/app/web/src/media
       - certs:/etc/nginx/ssl
+      # persist + rotate nginx logs on the host (compose json-file rotation
+      # only covers container stdout, not these files)
+      - ./logs/nginx:/home/app/logs
     ports:
       - 80:80
       - 443:443
