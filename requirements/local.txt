@@ -101,7 +101,7 @@ msgpack==1.2.1
     # via channels-redis
 nodeenv==1.10.0
     # via pre-commit
-packaging==26.2
+packaging==26.3
     # via kombu
 pillow==12.3.0
     # via django-docker-template

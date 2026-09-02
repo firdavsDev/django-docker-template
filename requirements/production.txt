@@ -124,7 +124,7 @@ msgpack==1.2.1
     # via
     #   autobahn
     #   channels-redis
-packaging==26.2
+packaging==26.3
     # via
     #   gunicorn
     #   incremental
