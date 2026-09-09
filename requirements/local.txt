@@ -107,7 +107,7 @@ pillow==12.3.0
     # via django-docker-template
 platformdirs==4.10.0
     # via virtualenv
-pre-commit==4.6.0
+pre-commit==4.6.2
 prompt-toolkit==3.0.52
     # via click-repl
 psycopg==3.3.4
