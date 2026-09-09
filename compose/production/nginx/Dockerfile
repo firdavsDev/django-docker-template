@@ -1,4 +1,4 @@
-FROM nginx:1.27-bookworm
+FROM nginx:1.29-bookworm
 
 ENV APP_HOME=/home/app
 ENV LOGS=/home/app/logs
